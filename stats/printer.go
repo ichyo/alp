@@ -7,6 +7,7 @@ import (
 
 	"github.com/tkuchiki/alp/helpers"
 
+	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -143,10 +144,10 @@ func generateAllLine(s *HTTPStat, quoteUri bool) []string {
 		round(s.P50ResponseTime()),
 		round(s.P95ResponseTime()),
 		round(s.P99ResponseTime()),
-		round(s.SumResponseBodyBytes()),
-		round(s.AvgResponseBodyBytes()),
-		round(s.StddevResponseBodyBytes()),
-		round(s.P95ResponseBodyBytes()),
+		humanize.Bytes(uint64(s.SumResponseBodyBytes())),
+		humanize.Bytes(uint64(s.AvgResponseBodyBytes())),
+		humanize.Bytes(uint64(s.StddevResponseBodyBytes())),
+		humanize.Bytes(uint64(s.P95ResponseBodyBytes())),
 	}
 }
 

@@ -6,6 +6,7 @@ require (
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/antlr/antlr4 v0.0.0-20200103163232-691acdc23f1f // indirect
 	github.com/antonmedv/expr v1.4.2
+	github.com/dustin/go-humanize v1.0.0
 	github.com/gdamore/tcell v1.2.0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/kr/pty v1.1.8 // indirect
