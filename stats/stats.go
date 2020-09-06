@@ -60,7 +60,7 @@ func NewHTTPStats(useResTimePercentile, useRequestBodyBytesPercentile, useRespon
 	}
 }
 
-func (hs *HTTPStats) Set(uri, method string, status int, restime, resBodyBytes, reqBodyBytes float64) {
+func (hs *HTTPStats) Set(uri, method string, status int, restime, reqBodyBytes, resBodyBytes float64) {
 	if len(hs.uriMatchingGroups) > 0 {
 		for _, re := range hs.uriMatchingGroups {
 			if ok := re.Match([]byte(uri)); ok {
@@ -78,7 +78,7 @@ func (hs *HTTPStats) Set(uri, method string, status int, restime, resBodyBytes, 
 		hs.stats = append(hs.stats, newHTTPStat(uri, method, hs.useResponseTimePercentile, hs.useRequestBodyBytesPercentile, hs.useResponseBodyBytesPercentile))
 	}
 
-	hs.stats[idx].Set(status, restime, resBodyBytes, reqBodyBytes)
+	hs.stats[idx].Set(status, restime, reqBodyBytes, resBodyBytes)
 }
 
 func (hs *HTTPStats) Stats() []*HTTPStat {
@@ -283,35 +283,35 @@ func (hs *HTTPStat) StddevRequestBodyBytes() float64 {
 
 // response
 func (hs *HTTPStat) MaxResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.Max
+	return hs.ResponseBodyBytes.Max
 }
 
 func (hs *HTTPStat) MinResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.Min
+	return hs.ResponseBodyBytes.Min
 }
 
 func (hs *HTTPStat) SumResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.Sum
+	return hs.ResponseBodyBytes.Sum
 }
 
 func (hs *HTTPStat) AvgResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.Avg(hs.Cnt)
+	return hs.ResponseBodyBytes.Avg(hs.Cnt)
 }
 
 func (hs *HTTPStat) P50ResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.P50(hs.Cnt)
+	return hs.ResponseBodyBytes.P50(hs.Cnt)
 }
 
 func (hs *HTTPStat) P95ResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.P95(hs.Cnt)
+	return hs.ResponseBodyBytes.P95(hs.Cnt)
 }
 
 func (hs *HTTPStat) P99ResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.P99(hs.Cnt)
+	return hs.ResponseBodyBytes.P99(hs.Cnt)
 }
 
 func (hs *HTTPStat) StddevResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.Stddev(hs.Cnt)
+	return hs.ResponseBodyBytes.Stddev(hs.Cnt)
 }
 
 func percentRank(l int, n int) int {

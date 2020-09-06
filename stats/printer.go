@@ -11,26 +11,30 @@ import (
 )
 
 var headers = map[string]string{
-	"count":    "Count",
-	"1xx":      "1xx",
-	"2xx":      "2xx",
-	"3xx":      "3xx",
-	"4xx":      "4xx",
-	"5xx":      "5xx",
-	"method":   "Method",
-	"uri":      "Uri",
-	"min":      "Min",
-	"max":      "Max",
-	"sum":      "Sum",
-	"avg":      "Avg",
-	"p50":      "P50",
-	"p95":      "P95",
-	"p99":      "P99",
-	"stddev":   "Stddev",
-	"min_body": "Min(Body)",
-	"max_body": "Max(Body)",
-	"sum_body": "Sum(Body)",
-	"avg_body": "Avg(Body)",
+	"count":       "Count",
+	"1xx":         "1xx",
+	"2xx":         "2xx",
+	"3xx":         "3xx",
+	"4xx":         "4xx",
+	"5xx":         "5xx",
+	"method":      "Method",
+	"uri":         "Uri",
+	"min":         "Min",
+	"max":         "Max",
+	"sum":         "Sum",
+	"avg":         "Avg",
+	"median":      "Median",
+	"p95":         "P95",
+	"p99":         "P99",
+	"stddev":      "Std",
+	"min_body":    "Min(Body)",
+	"max_body":    "Max(Body)",
+	"sum_body":    "Sum(Body)",
+	"avg_body":    "Avg(Body)",
+	"stddev_body": "Std(Body)",
+	"median_body": "Med(Body)",
+	"p95_body":    "P95(Body)",
+	"p99_body":    "P99(Body)",
 }
 
 var keywords = []string{
@@ -42,25 +46,23 @@ var keywords = []string{
 	"5xx",
 	"method",
 	"uri",
-	"min",
-	"max",
 	"sum",
 	"avg",
-	"p1",
-	"p50",
-	"p99",
 	"stddev",
-	"min_body",
-	"max_body",
+	"median",
+	"p95",
+	"p99",
 	"sum_body",
 	"avg_body",
+	"stddev_body",
+	"p95_body",
 }
 
 var defaultHeaders = []string{
 	"Count", "1xx", "2xx", "3xx", "4xx", "5xx", "Method", "Uri",
-	"Min", "Max", "Sum", "Avg",
-	"P50", "P95", "P99", "Stddev",
-	"Min(Body)", "Max(Body)", "Sum(Body)", "Avg(Body)",
+	"Sum", "Avg", "Std",
+	"Median", "P95", "P99",
+	"Sum(Body)", "Avg(Body)", "Std(Body)", "P95(Body)",
 }
 
 type Printer struct {
@@ -135,18 +137,16 @@ func generateAllLine(s *HTTPStat, quoteUri bool) []string {
 		s.StrStatus5xx(),
 		s.Method,
 		uri,
-		round(s.MinResponseTime()),
-		round(s.MaxResponseTime()),
 		round(s.SumResponseTime()),
 		round(s.AvgResponseTime()),
+		round(s.StddevResponseTime()),
 		round(s.P50ResponseTime()),
 		round(s.P95ResponseTime()),
 		round(s.P99ResponseTime()),
-		round(s.StddevResponseTime()),
-		round(s.MinResponseBodyBytes()),
-		round(s.MaxResponseBodyBytes()),
 		round(s.SumResponseBodyBytes()),
 		round(s.AvgResponseBodyBytes()),
+		round(s.StddevResponseBodyBytes()),
+		round(s.P95ResponseBodyBytes()),
 	}
 }
 
@@ -189,7 +189,7 @@ func (p *Printer) GenerateLine(s *HTTPStat, quoteUri bool) []string {
 			line = append(line, round(s.SumResponseTime()))
 		case "avg":
 			line = append(line, round(s.AvgResponseTime()))
-		case "p50":
+		case "median":
 			line = append(line, round(s.P50ResponseTime()))
 		case "p95":
 			line = append(line, round(s.P95ResponseTime()))
@@ -205,6 +205,14 @@ func (p *Printer) GenerateLine(s *HTTPStat, quoteUri bool) []string {
 			line = append(line, round(s.SumResponseBodyBytes()))
 		case "avg_body":
 			line = append(line, round(s.AvgResponseBodyBytes()))
+		case "median_body":
+			line = append(line, round(s.P50ResponseBodyBytes()))
+		case "p95_body":
+			line = append(line, round(s.P95ResponseBodyBytes()))
+		case "p99_body":
+			line = append(line, round(s.P99ResponseBodyBytes()))
+		case "stddev_body":
+			line = append(line, round(s.StddevResponseBodyBytes()))
 		}
 	}
 

@@ -167,7 +167,7 @@ func (p *Profiler) Run(args []string) error {
 		options.Pattern(p.regexpFlags.Pattern),
 	)
 
-	sts := stats.NewHTTPStats(true, false, false)
+	sts := stats.NewHTTPStats(true, false, true)
 
 	err = sts.InitFilter(opts)
 	if err != nil {
@@ -275,7 +275,7 @@ Loop:
 			continue Loop
 		}
 
-		sts.Set(s.Uri, s.Method, s.Status, s.ResponseTime, s.BodyBytes, 0)
+		sts.Set(s.Uri, s.Method, s.Status, s.ResponseTime, 0, s.BodyBytes)
 
 		if sts.CountUris() > opts.Limit {
 			return fmt.Errorf("Too many URI's (%d or less)", opts.Limit)

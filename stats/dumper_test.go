@@ -11,7 +11,7 @@ func TestDumpStats(t *testing.T) {
 	outw := new(bytes.Buffer)
 	po := NewPrintOptions()
 	stats := NewHTTPStats(true, false, false, po)
-	stats.Set("/foo/bar", "POST", 200, 0.057, 12, 0)
+	stats.Set("/foo/bar", "POST", 200, 0.057, 0, 12)
 
 	err := stats.DumpStats(outw)
 	assert.Nil(t, err)
