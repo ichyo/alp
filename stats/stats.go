@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"regexp"
+	"sort"
 	"sync"
 
 	"github.com/tkuchiki/alp/errors"
@@ -340,6 +341,7 @@ type responseTime struct {
 	Sum           float64 `yaml:"sum"`
 	UsePercentile bool
 	Percentiles   []float64 `yaml:"percentiles"`
+	Sorted        bool
 }
 
 func newResponseTime(usePercentile bool) *responseTime {
@@ -362,7 +364,22 @@ func (res *responseTime) Set(val float64) {
 
 	if res.UsePercentile {
 		res.Percentiles = append(res.Percentiles, val)
+		res.Sorted = false
 	}
+}
+
+func (res *responseTime) sortPercentiles() {
+	if res.Sorted {
+		return
+	}
+
+	sort.Float64s(res.Percentiles)
+	res.Sorted = true
+}
+
+func (res *responseTime) getPercentile(idx int) float64 {
+	res.sortPercentiles()
+	return res.Percentiles[idx]
 }
 
 func (res *responseTime) Avg(cnt int) float64 {
@@ -375,7 +392,7 @@ func (res *responseTime) P1(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 1)
-	return res.Percentiles[plen]
+	return res.getPercentile(plen)
 }
 
 func (res *responseTime) P50(cnt int) float64 {
@@ -384,7 +401,7 @@ func (res *responseTime) P50(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 50)
-	return res.Percentiles[plen]
+	return res.getPercentile(plen)
 }
 
 func (res *responseTime) P90(cnt int) float64 {
@@ -393,7 +410,7 @@ func (res *responseTime) P90(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 90)
-	return res.Percentiles[plen]
+	return res.getPercentile(plen)
 }
 
 func (res *responseTime) P99(cnt int) float64 {
@@ -402,7 +419,7 @@ func (res *responseTime) P99(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 99)
-	return res.Percentiles[plen]
+	return res.getPercentile(plen)
 }
 
 func (res *responseTime) Stddev(cnt int) float64 {
@@ -427,6 +444,7 @@ type bodyBytes struct {
 	Sum           float64 `yaml:"sum"`
 	UsePercentile bool
 	Percentiles   []float64 `yaml:"percentiles"`
+	Sorted        bool
 }
 
 func newBodyBytes(usePercentile bool) *bodyBytes {
@@ -449,7 +467,22 @@ func (body *bodyBytes) Set(val float64) {
 
 	if body.UsePercentile {
 		body.Percentiles = append(body.Percentiles, val)
+		body.Sorted = false
 	}
+}
+
+func (res *bodyBytes) sortPercentiles() {
+	if res.Sorted {
+		return
+	}
+
+	sort.Float64s(res.Percentiles)
+	res.Sorted = true
+}
+
+func (res *bodyBytes) getPercentile(idx int) float64 {
+	res.sortPercentiles()
+	return res.Percentiles[idx]
 }
 
 func (body *bodyBytes) Avg(cnt int) float64 {
@@ -462,7 +495,7 @@ func (body *bodyBytes) P1(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 1)
-	return body.Percentiles[plen]
+	return body.getPercentile(plen)
 }
 
 func (body *bodyBytes) P50(cnt int) float64 {
@@ -471,7 +504,7 @@ func (body *bodyBytes) P50(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 50)
-	return body.Percentiles[plen]
+	return body.getPercentile(plen)
 }
 
 func (body *bodyBytes) P90(cnt int) float64 {
@@ -480,7 +513,7 @@ func (body *bodyBytes) P90(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 90)
-	return body.Percentiles[plen]
+	return body.getPercentile(plen)
 }
 
 func (body *bodyBytes) P99(cnt int) float64 {
@@ -489,7 +522,7 @@ func (body *bodyBytes) P99(cnt int) float64 {
 	}
 
 	plen := percentRank(cnt, 99)
-	return body.Percentiles[plen]
+	return body.getPercentile(plen)
 }
 
 func (body *bodyBytes) Stddev(cnt int) float64 {
