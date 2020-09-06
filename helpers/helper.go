@@ -9,7 +9,7 @@ import (
 func CompileUriMatchingGroups(groups []string) ([]*regexp.Regexp, error) {
 	uriMatchingGroups := make([]*regexp.Regexp, 0, len(groups))
 	for _, pattern := range groups {
-		re, err := regexp.Compile(pattern)
+		re, err := regexp.Compile("^" + pattern + "$")
 		if err != nil {
 			return nil, err
 		}
