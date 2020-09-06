@@ -67,8 +67,8 @@ var SortOptions = map[string]string{
 	"min-body": stats.SortMinResponseBodyBytes,
 	"avg-body": stats.SortAvgResponseBodyBytes,
 	"sum-body": stats.SortSumResponseBodyBytes,
-	"p1":       stats.SortP1ResponseTime,
 	"p50":      stats.SortP50ResponseTime,
+	"p95":      stats.SortP95ResponseTime,
 	"p99":      stats.SortP99ResponseTime,
 	"stddev":   stats.SortStddevResponseTime,
 }

@@ -10,27 +10,24 @@ const (
 	SortMinResponseTime         = "MinResponseTime"
 	SortSumResponseTime         = "SumResponseTime"
 	SortAvgResponseTime         = "AvgResponseTime"
-	SortP1ResponseTime          = "P1ResponseTime"
 	SortP50ResponseTime         = "P50ResponseTime"
-	SortP90ResponseTime         = "P90ResponseTime"
+	SortP95ResponseTime         = "P95ResponseTime"
 	SortP99ResponseTime         = "P99ResponseTime"
 	SortStddevResponseTime      = "StddevResponseTime"
 	SortMaxRequestBodyBytes     = "MaxRequestBodyBytes"
 	SortMinRequestBodyBytes     = "MinRequestBodyBytes"
 	SortSumRequestBodyBytes     = "SumRequestBodyBytes"
 	SortAvgRequestBodyBytes     = "AvgRequestBodyBytes"
-	SortP1RequestBodyBytes      = "P1RequestBodyBytes"
 	SortP50RequestBodyBytes     = "P50RequestBodyBytes"
-	SortP90RequestBodyBytes     = "P90RequestBodyBytes"
+	SortP95RequestBodyBytes     = "P95RequestBodyBytes"
 	SortP99RequestBodyBytes     = "P99RequestBodyBytes"
 	SortStddevRequestBodyBytes  = "StddevRequestBodyBytes"
 	SortMaxResponseBodyBytes    = "MaxResponseBodyBytes"
 	SortMinResponseBodyBytes    = "MinResponseBodyBytes"
 	SortSumResponseBodyBytes    = "SumResponseBodyBytes"
 	SortAvgResponseBodyBytes    = "AvgResponseBodyBytes"
-	SortP1ResponseBodyBytes     = "P1ResponseBodyBytes"
 	SortP50ResponseBodyBytes    = "P50ResponseBodyBytes"
-	SortP90ResponseBodyBytes    = "P90ResponseBodyBytes"
+	SortP95ResponseBodyBytes    = "P95ResponseBodyBytes"
 	SortP99ResponseBodyBytes    = "P99ResponseBodyBytes"
 	SortStddevResponseBodyBytes = "StddevResponseBodyBytes"
 )
@@ -52,12 +49,10 @@ func (hs *HTTPStats) Sort(sortType string, reverse bool) {
 		hs.SortSumResponseTime(reverse)
 	case SortAvgResponseTime:
 		hs.SortAvgResponseTime(reverse)
-	case SortP1ResponseTime:
-		hs.SortP1ResponseTime(reverse)
 	case SortP50ResponseTime:
 		hs.SortP50ResponseTime(reverse)
-	case SortP90ResponseTime:
-		hs.SortP90ResponseTime(reverse)
+	case SortP95ResponseTime:
+		hs.SortP95ResponseTime(reverse)
 	case SortP99ResponseTime:
 		hs.SortP99ResponseTime(reverse)
 	case SortStddevResponseTime:
@@ -71,12 +66,10 @@ func (hs *HTTPStats) Sort(sortType string, reverse bool) {
 		hs.SortSumRequestBodyBytes(reverse)
 	case SortAvgRequestBodyBytes:
 		hs.SortAvgRequestBodyBytes(reverse)
-	case SortP1RequestBodyBytes:
-		hs.SortP1RequestBodyBytes(reverse)
 	case SortP50RequestBodyBytes:
 		hs.SortP50RequestBodyBytes(reverse)
-	case SortP90RequestBodyBytes:
-		hs.SortP90RequestBodyBytes(reverse)
+	case SortP95RequestBodyBytes:
+		hs.SortP95RequestBodyBytes(reverse)
 	case SortP99RequestBodyBytes:
 		hs.SortP99RequestBodyBytes(reverse)
 	case SortStddevRequestBodyBytes:
@@ -90,12 +83,10 @@ func (hs *HTTPStats) Sort(sortType string, reverse bool) {
 		hs.SortSumResponseBodyBytes(reverse)
 	case SortAvgResponseBodyBytes:
 		hs.SortAvgResponseBodyBytes(reverse)
-	case SortP1ResponseBodyBytes:
-		hs.SortP1ResponseBodyBytes(reverse)
 	case SortP50ResponseBodyBytes:
 		hs.SortP50ResponseBodyBytes(reverse)
-	case SortP90ResponseBodyBytes:
-		hs.SortP90ResponseBodyBytes(reverse)
+	case SortP95ResponseBodyBytes:
+		hs.SortP95ResponseBodyBytes(reverse)
 	case SortP99ResponseBodyBytes:
 		hs.SortP99ResponseBodyBytes(reverse)
 	case SortStddevResponseBodyBytes:
@@ -189,18 +180,6 @@ func (hs *HTTPStats) SortAvgResponseTime(reverse bool) {
 	}
 }
 
-func (hs *HTTPStats) SortP1ResponseTime(reverse bool) {
-	if reverse {
-		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P1ResponseTime() > hs.stats[j].P1ResponseTime()
-		})
-	} else {
-		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P1ResponseTime() < hs.stats[j].P1ResponseTime()
-		})
-	}
-}
-
 func (hs *HTTPStats) SortP50ResponseTime(reverse bool) {
 	if reverse {
 		sort.Slice(hs.stats, func(i, j int) bool {
@@ -213,14 +192,14 @@ func (hs *HTTPStats) SortP50ResponseTime(reverse bool) {
 	}
 }
 
-func (hs *HTTPStats) SortP90ResponseTime(reverse bool) {
+func (hs *HTTPStats) SortP95ResponseTime(reverse bool) {
 	if reverse {
 		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P90ResponseTime() > hs.stats[j].P90ResponseTime()
+			return hs.stats[i].P95ResponseTime() > hs.stats[j].P95ResponseTime()
 		})
 	} else {
 		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P90ResponseTime() < hs.stats[j].P90ResponseTime()
+			return hs.stats[i].P95ResponseTime() < hs.stats[j].P95ResponseTime()
 		})
 	}
 }
@@ -298,18 +277,6 @@ func (hs *HTTPStats) SortAvgRequestBodyBytes(reverse bool) {
 	}
 }
 
-func (hs *HTTPStats) SortP1RequestBodyBytes(reverse bool) {
-	if reverse {
-		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P1RequestBodyBytes() > hs.stats[j].P1RequestBodyBytes()
-		})
-	} else {
-		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P1RequestBodyBytes() < hs.stats[j].P1RequestBodyBytes()
-		})
-	}
-}
-
 func (hs *HTTPStats) SortP50RequestBodyBytes(reverse bool) {
 	if reverse {
 		sort.Slice(hs.stats, func(i, j int) bool {
@@ -322,14 +289,14 @@ func (hs *HTTPStats) SortP50RequestBodyBytes(reverse bool) {
 	}
 }
 
-func (hs *HTTPStats) SortP90RequestBodyBytes(reverse bool) {
+func (hs *HTTPStats) SortP95RequestBodyBytes(reverse bool) {
 	if reverse {
 		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P90RequestBodyBytes() > hs.stats[j].P90RequestBodyBytes()
+			return hs.stats[i].P95RequestBodyBytes() > hs.stats[j].P95RequestBodyBytes()
 		})
 	} else {
 		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P90RequestBodyBytes() < hs.stats[j].P90RequestBodyBytes()
+			return hs.stats[i].P95RequestBodyBytes() < hs.stats[j].P95RequestBodyBytes()
 		})
 	}
 }
@@ -407,18 +374,6 @@ func (hs *HTTPStats) SortAvgResponseBodyBytes(reverse bool) {
 	}
 }
 
-func (hs *HTTPStats) SortP1ResponseBodyBytes(reverse bool) {
-	if reverse {
-		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P1ResponseBodyBytes() > hs.stats[j].P1ResponseBodyBytes()
-		})
-	} else {
-		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P1ResponseBodyBytes() < hs.stats[j].P1ResponseBodyBytes()
-		})
-	}
-}
-
 func (hs *HTTPStats) SortP50ResponseBodyBytes(reverse bool) {
 	if reverse {
 		sort.Slice(hs.stats, func(i, j int) bool {
@@ -431,14 +386,14 @@ func (hs *HTTPStats) SortP50ResponseBodyBytes(reverse bool) {
 	}
 }
 
-func (hs *HTTPStats) SortP90ResponseBodyBytes(reverse bool) {
+func (hs *HTTPStats) SortP95ResponseBodyBytes(reverse bool) {
 	if reverse {
 		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P90ResponseBodyBytes() > hs.stats[j].P90ResponseBodyBytes()
+			return hs.stats[i].P95ResponseBodyBytes() > hs.stats[j].P95ResponseBodyBytes()
 		})
 	} else {
 		sort.Slice(hs.stats, func(i, j int) bool {
-			return hs.stats[i].P90ResponseBodyBytes() < hs.stats[j].P90ResponseBodyBytes()
+			return hs.stats[i].P95ResponseBodyBytes() < hs.stats[j].P95ResponseBodyBytes()
 		})
 	}
 }

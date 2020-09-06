@@ -232,16 +232,12 @@ func (hs *HTTPStat) AvgResponseTime() float64 {
 	return hs.ResponseTime.Avg(hs.Cnt)
 }
 
-func (hs *HTTPStat) P1ResponseTime() float64 {
-	return hs.ResponseTime.P1(hs.Cnt)
-}
-
 func (hs *HTTPStat) P50ResponseTime() float64 {
 	return hs.ResponseTime.P50(hs.Cnt)
 }
 
-func (hs *HTTPStat) P90ResponseTime() float64 {
-	return hs.ResponseTime.P90(hs.Cnt)
+func (hs *HTTPStat) P95ResponseTime() float64 {
+	return hs.ResponseTime.P95(hs.Cnt)
 }
 
 func (hs *HTTPStat) P99ResponseTime() float64 {
@@ -269,16 +265,12 @@ func (hs *HTTPStat) AvgRequestBodyBytes() float64 {
 	return hs.RequestBodyBytes.Avg(hs.Cnt)
 }
 
-func (hs *HTTPStat) P1RequestBodyBytes() float64 {
-	return hs.RequestBodyBytes.P1(hs.Cnt)
-}
-
 func (hs *HTTPStat) P50RequestBodyBytes() float64 {
 	return hs.RequestBodyBytes.P50(hs.Cnt)
 }
 
-func (hs *HTTPStat) P90RequestBodyBytes() float64 {
-	return hs.RequestBodyBytes.P90(hs.Cnt)
+func (hs *HTTPStat) P95RequestBodyBytes() float64 {
+	return hs.RequestBodyBytes.P95(hs.Cnt)
 }
 
 func (hs *HTTPStat) P99RequestBodyBytes() float64 {
@@ -306,16 +298,12 @@ func (hs *HTTPStat) AvgResponseBodyBytes() float64 {
 	return hs.RequestBodyBytes.Avg(hs.Cnt)
 }
 
-func (hs *HTTPStat) P1ResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.P1(hs.Cnt)
-}
-
 func (hs *HTTPStat) P50ResponseBodyBytes() float64 {
 	return hs.RequestBodyBytes.P50(hs.Cnt)
 }
 
-func (hs *HTTPStat) P90ResponseBodyBytes() float64 {
-	return hs.RequestBodyBytes.P90(hs.Cnt)
+func (hs *HTTPStat) P95ResponseBodyBytes() float64 {
+	return hs.RequestBodyBytes.P95(hs.Cnt)
 }
 
 func (hs *HTTPStat) P99ResponseBodyBytes() float64 {
@@ -386,15 +374,6 @@ func (res *responseTime) Avg(cnt int) float64 {
 	return res.Sum / float64(cnt)
 }
 
-func (res *responseTime) P1(cnt int) float64 {
-	if !res.UsePercentile {
-		return 0.0
-	}
-
-	plen := percentRank(cnt, 1)
-	return res.getPercentile(plen)
-}
-
 func (res *responseTime) P50(cnt int) float64 {
 	if !res.UsePercentile {
 		return 0.0
@@ -404,12 +383,12 @@ func (res *responseTime) P50(cnt int) float64 {
 	return res.getPercentile(plen)
 }
 
-func (res *responseTime) P90(cnt int) float64 {
+func (res *responseTime) P95(cnt int) float64 {
 	if !res.UsePercentile {
 		return 0.0
 	}
 
-	plen := percentRank(cnt, 90)
+	plen := percentRank(cnt, 95)
 	return res.getPercentile(plen)
 }
 
@@ -489,15 +468,6 @@ func (body *bodyBytes) Avg(cnt int) float64 {
 	return body.Sum / float64(cnt)
 }
 
-func (body *bodyBytes) P1(cnt int) float64 {
-	if !body.UsePercentile {
-		return 0.0
-	}
-
-	plen := percentRank(cnt, 1)
-	return body.getPercentile(plen)
-}
-
 func (body *bodyBytes) P50(cnt int) float64 {
 	if !body.UsePercentile {
 		return 0.0
@@ -507,12 +477,12 @@ func (body *bodyBytes) P50(cnt int) float64 {
 	return body.getPercentile(plen)
 }
 
-func (body *bodyBytes) P90(cnt int) float64 {
+func (body *bodyBytes) P95(cnt int) float64 {
 	if !body.UsePercentile {
 		return 0.0
 	}
 
-	plen := percentRank(cnt, 90)
+	plen := percentRank(cnt, 95)
 	return body.getPercentile(plen)
 }
 

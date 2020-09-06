@@ -23,8 +23,8 @@ var headers = map[string]string{
 	"max":      "Max",
 	"sum":      "Sum",
 	"avg":      "Avg",
-	"p1":       "P1",
 	"p50":      "P50",
+	"p95":      "P95",
 	"p99":      "P99",
 	"stddev":   "Stddev",
 	"min_body": "Min(Body)",
@@ -59,7 +59,7 @@ var keywords = []string{
 var defaultHeaders = []string{
 	"Count", "1xx", "2xx", "3xx", "4xx", "5xx", "Method", "Uri",
 	"Min", "Max", "Sum", "Avg",
-	"P1", "P50", "P99", "Stddev",
+	"P50", "P95", "P99", "Stddev",
 	"Min(Body)", "Max(Body)", "Sum(Body)", "Avg(Body)",
 }
 
@@ -139,8 +139,8 @@ func generateAllLine(s *HTTPStat, quoteUri bool) []string {
 		round(s.MaxResponseTime()),
 		round(s.SumResponseTime()),
 		round(s.AvgResponseTime()),
-		round(s.P1ResponseTime()),
 		round(s.P50ResponseTime()),
+		round(s.P95ResponseTime()),
 		round(s.P99ResponseTime()),
 		round(s.StddevResponseTime()),
 		round(s.MinResponseBodyBytes()),
@@ -189,10 +189,10 @@ func (p *Printer) GenerateLine(s *HTTPStat, quoteUri bool) []string {
 			line = append(line, round(s.SumResponseTime()))
 		case "avg":
 			line = append(line, round(s.AvgResponseTime()))
-		case "p1":
-			line = append(line, round(s.P1ResponseTime()))
 		case "p50":
 			line = append(line, round(s.P50ResponseTime()))
+		case "p95":
+			line = append(line, round(s.P95ResponseTime()))
 		case "p99":
 			line = append(line, round(s.P99ResponseTime()))
 		case "stddev":
